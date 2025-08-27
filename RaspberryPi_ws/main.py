@@ -45,13 +45,6 @@ class VoskSTTController:
             )
             if not esp32_handler.is_connected:
                 esp32_handler = None  # 接続失敗時はNoneに戻す
-            # if esp32_handler.is_connected:
-                # OpenAI + ESP32統合ハンドラー作成
-                # openai_esp32_handler = OpenAIAPIHandlerForESP32(
-                #     api_key=self.config['openai_api']['api_key'],
-                #     esp32_handler=esp32_handler
-                # )
-                # self.output_manager.add_final_handler(openai_esp32_handler)
         
         # ファイル出力設定
         file_config = self.config.get('file_output', {})
@@ -70,7 +63,7 @@ class VoskSTTController:
             target = openai_config.get('target', 'final')
             system_prompt = openai_config.get('system_prompt')
             
-            if api_key and api_key != 'your-openai-api-key-here':
+            if api_key and api_key != 'hogehoge':
                 print(f"OpenAI API設定: {model} (対象: {target})")
                 self.output_manager.add_openai_handler(
                     api_key=api_key,
