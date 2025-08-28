@@ -374,8 +374,8 @@ class SimpleESP32Handler(OutputHandler):
 class OpenAIAPIHandler(OutputHandler):
     """OpenAI API出力ハンドラー"""
     
-    def __init__(self, api_key: str, model: str = "gpt-4o-mini", esp32_handler: SimpleESP32Handler = None,
-                 system_prompt: str = None, timeout: int = 30, retry_count: int = 3):
+    def __init__(self, api_key: str, model: str = "gpt-5-mini", esp32_handler: SimpleESP32Handler = None,
+                 system_prompt: str = None, timeout: int = 30, retry_count: int = 3, on_command_sent = None):
         """
         Args:
             api_key: OpenAI APIキー
@@ -391,6 +391,7 @@ class OpenAIAPIHandler(OutputHandler):
         self.retry_count = retry_count
         self.esp32_handler = esp32_handler
         self.api_url = "https://api.openai.com/v1/chat/completions"
+        self.on_command_sent = on_command_sent # 1. コールバックをインスタンス変数として保存
         
         # セッションを使い回してパフォーマンス向上
         self.session = requests.Session()
@@ -447,6 +448,9 @@ class OpenAIAPIHandler(OutputHandler):
                         success = self.esp32_handler.send(ai_response)
                         if success:
                             print("[ESP32] コマンド送信成功")
+                            if self.on_command_sent:
+                                print("[Controller] 認識を自動停止します...")
+                                self.on_command_sent()
                         else:
                             print("[ESP32] コマンド送信失敗")
                     return True
@@ -556,13 +560,14 @@ class STTOutputManager:
             self.add_final_handler(file_handler)
             self.add_complete_handler(file_handler)
 
-    def add_openai_handler(self, api_key, target='final', model='gpt-4o-mini', system_prompt=None, esp32_handler=None):
+    def add_openai_handler(self, api_key, target='final', model='gpt-4o-mini', system_prompt=None, esp32_handler=None, on_command_sent=None):
         """OpenAI APIハンドラーを簡単追加"""
         openai_handler = OpenAIAPIHandler(
             api_key=api_key,
             model=model,
             system_prompt=system_prompt,
-            esp32_handler=esp32_handler
+            esp32_handler=esp32_handler,
+            on_command_sent=on_command_sent
         )
         
         if target == 'partial':

@@ -4,6 +4,7 @@
 import os
 import sys
 import time
+import threading
 from voskCore import VoskSTTEngine
 from outputHandler import STTOutputManager, FileOutputHandler, OpenAIAPIHandler, SimpleESP32Handler
 from STWconfig import load_config
@@ -29,8 +30,8 @@ class VoskSTTController:
         # 状態管理
         self.is_running = False
         
-        # 設定から出力ハンドラーを追加
-        self._setup_output_handlers()
+        # 設定から出力ハンドラーを追加 リセット系追加のため除外
+        #self._setup_output_handlers()
     
     def _setup_output_handlers(self):
         """設定に基づいて出力ハンドラーを設定"""
@@ -70,7 +71,8 @@ class VoskSTTController:
                     target=target,
                     model=model,
                     system_prompt=system_prompt,
-                    esp32_handler=esp32_handler
+                    esp32_handler=esp32_handler,
+                    on_command_sent=self._request_stop_listening
                 )
             else:
                 print("警告: OpenAI APIキーが設定されていません")
@@ -80,7 +82,7 @@ class VoskSTTController:
         try:
             print("STTエンジン初期化中...")
             self.stt_engine = VoskSTTEngine(self.model_path)
-            
+            self._setup_output_handlers()
             # コールバック設定
             self.stt_engine.set_callbacks(
                 on_partial=self.output_manager.handle_partial_result,
@@ -96,6 +98,15 @@ class VoskSTTController:
         except Exception as e:
             print(f"初期化失敗: {e}")
             return False
+    
+    def _request_stop_listening(self):
+        """
+        別スレッドから安全に音声認識を停止するためのリクエスト。
+        現在のスレッド(音声処理スレッド)から直接join()を呼ぶのを避けるため、
+        非常に短い遅延(0.1秒)後に、別スreadでstop_listeningを呼び出す。
+        """
+        if self.stt_engine and self.stt_engine.is_listening:
+            threading.Timer(0.1, self.stt_engine.stop_listening).start()
     
     def _handle_error(self, error_message: str):
         """エラーハンドリング"""
