@@ -1,14 +1,23 @@
 def load_config():
     # 設定ファイル
     config = {
-        'auto_stop_seconds': 8,  # ESP32制御に変更したためNoneに設定
+
+        'auto_stop_seconds': None,  # ESP32制御に変更したためNoneに設定
+
         
-        # 録音制御用ESP32設定（新規追加）
-        'recording_controller': {
+
+        # STT制御用ESP32設定（新規追加）
+
+        'stt_switch': {
+
             'enabled': True,
+
             'port': '/dev/ttyACM1',# 自動検出
+
             'baudrate': 115200,
+
             'debug': True
+
         },
         
         # 窓制御用ESP32設定（既存）
