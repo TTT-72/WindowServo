@@ -15,3 +15,28 @@
 | **使用AI・ローカルモデル** | **Vosk** |
 | **使用AI・開発支援**<br>(コード生成支援) | **Claude Sonnet4**<br>**Gemini 2.5**<br>**Chat-GPT5** |
 | **使用AI・API** | **OpenAI-API**(GPT5-mini, Chat Completions API) |
+
+---
+
+##  実機画像
+
+<table>
+  <tr>
+    <td align="center">
+      <figure>
+        <figcaption align="center">
+          <code>本体</code>
+        </figcaption>
+        <img src="images/motor_front_quarter.jpg" alt="動力部前面" style="width:100%;">
+      </figure>
+    </td>
+    <td align="center">
+      <figure>
+        <figcaption align="center">
+          <code>送信メッセージ</code>
+        </figcaption>
+        <img src="images/motor_back_quarter .jpg" alt="動力部背面" style="width:100%;">
+      </figure>
+    </td>
+  </tr>
+</table>
