@@ -15,9 +15,3 @@
 | **使用AI・ローカルモデル** | **Vosk** |
 | **使用AI・開発支援**<br>(コード生成支援) | **Claude Sonnet4**<br>**Gemini 2.5**<br>**Chat-GPT5** |
 | **使用AI・API** | **OpenAI-API**(GPT5-mini, Chat Completions API) |
-
-    
-
-      　　 
-
-
