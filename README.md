@@ -25,7 +25,7 @@
     <td align="center">
       <figure>
         <figcaption align="center">
-          <code>本体</code>
+          <code>動力部前面</code>
         </figcaption>
         <img src="images/motor_front_quarter.jpg" alt="動力部前面" style="width:100%;">
       </figure>
@@ -33,7 +33,7 @@
     <td align="center">
       <figure>
         <figcaption align="center">
-          <code>送信メッセージ</code>
+          <code>動力部背面</code>
         </figcaption>
         <img src="images/motor_back_quarter .jpg" alt="動力部背面" style="width:100%;">
       </figure>
